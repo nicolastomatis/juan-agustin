@@ -1,0 +1,225 @@
+/* =====================================
+   CONFIGURACIÓN GENERAL
+===================================== */
+
+:root {
+  --space-color: #122266;
+  --star-color: #ffffff;
+  --chapter-duration: 1.2s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+body {
+  background: var(--space-color);
+  color: white;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* =====================================
+   FONDO ESPACIAL
+===================================== */
+
+#space-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#space-warp {
+  position: fixed;
+  inset: -50%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 15%,
+      rgba(70, 115, 255, 0.08) 50%,
+      transparent 75%
+    );
+  transform: scale(0.5);
+  transition:
+    opacity 0.5s ease,
+    transform 1.2s ease;
+}
+
+body.is-traveling #space-warp {
+  opacity: 1;
+  transform: scale(1.5);
+}
+
+/* =====================================
+   CAPÍTULOS
+===================================== */
+
+#story {
+  position: relative;
+  z-index: 2;
+}
+
+.chapter {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 80px 24px;
+
+  scroll-snap-align: start;
+  isolation: isolate;
+}
+
+/* Contenido de cada capítulo */
+
+.chapter-content {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+
+  opacity: 0;
+  transform: translateY(70px) scale(0.94);
+  filter: blur(8px);
+
+  transition:
+    opacity 1s ease,
+    transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 1s ease;
+}
+
+.chapter.active .chapter-content {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.chapter-label {
+  display: block;
+  margin-bottom: 20px;
+
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+
+  color: #b8caff;
+}
+
+.chapter h1,
+.chapter h2 {
+  font-family: 'Roboto Slab', serif;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  text-shadow: 0 0 30px rgba(157, 190, 255, 0.4);
+}
+
+.chapter p {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  line-height: 1.8;
+  color: rgba(255,255,255,0.85);
+}
+
+/* =====================================
+   NAVEGACIÓN LATERAL
+===================================== */
+
+.chapter-navigation {
+  position: fixed;
+  z-index: 10;
+
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.7);
+  background: transparent;
+
+  cursor: pointer;
+  padding: 0;
+
+  transition:
+    transform 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.nav-dot.active {
+  background: white;
+  transform: scale(1.5);
+  box-shadow: 0 0 15px #a9caff;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 768px) {
+
+  .chapter {
+    padding: 60px 24px;
+  }
+
+  .chapter-navigation {
+    right: 14px;
+    gap: 13px;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .chapter-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  .chapter h1,
+  .chapter h2 {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .chapter p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+
+/* Accesibilidad: reducir movimiento */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

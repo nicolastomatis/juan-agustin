@@ -1,0 +1,242 @@
+        /* Reset y control estricto de 100dvh sin rebote de scroll */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100dvh;
+            overflow: hidden;
+            background-color: #050814;
+            color: #f8f9fa;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        /* Simulación de marco de teléfono en pantallas de escritorio */
+        @media (min-width: 480px) {
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: radial-gradient(circle at center, #152040 0%, #050814 100%);
+            }
+
+            #phone-frame {
+                height: min(94dvh, 860px) !important;
+                border-radius: 42px;
+                box-shadow:
+                    0 25px 70px rgba(0, 0, 0, 0.85),
+                    0 0 40px rgba(244, 208, 111, 0.15),
+                    inset 0 0 0 2px rgba(244, 208, 111, 0.28);
+            }
+        }
+
+        /* Animación de flotación suave para las ilustraciones */
+        @keyframes floatSlow {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(1deg);
+            }
+        }
+
+        .animate-float {
+            animation: floatSlow 4.5s ease-in-out infinite;
+        }
+
+        /* Halo circular con bordes difuminados para las ilustraciones */
+        .illustration-frame {
+            position: relative;
+            border-radius: 9999px;
+            background: radial-gradient(circle, rgba(28, 37, 65, 0.75) 35%, rgba(10, 17, 40, 0) 75%);
+            box-shadow:
+                0 0 45px rgba(244, 208, 111, 0.2),
+                inset 0 0 30px rgba(244, 208, 111, 0.18);
+        }
+
+        .illustration-frame::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border-radius: 9999px;
+            border: 1px dashed rgba(244, 208, 111, 0.35);
+            pointer-events: none;
+            animation: spinSlow 38s linear infinite;
+        }
+
+        @keyframes spinSlow {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Transiciones estilo Libro de Cuentos entre Escenas */
+        .scene {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3.25rem 1.5rem 1.75rem 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(28px) scale(0.97);
+            transition:
+                opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 10;
+        }
+
+        .scene.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+            z-index: 20;
+        }
+
+        .scene.exit-up {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-28px) scale(0.96);
+        }
+
+        /* Animación escalonada de los hijos de cada escena activa */
+        .scene>* {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+        .scene.active>*:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.12s;
+        }
+
+        .scene.active>*:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.26s;
+        }
+
+        .scene.active>*:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.40s;
+        }
+
+        .scene.active>*:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.52s;
+        }
+
+        /* Botón Mágico Dorado con efecto Pulse y Brillo */
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 183, 3, 0.55), 0 8px 25px rgba(255, 183, 3, 0.35);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(255, 183, 3, 0), 0 10px 30px rgba(244, 208, 111, 0.6);
+            }
+        }
+
+        .btn-magic {
+            background: linear-gradient(135deg, #f4d06f 0%, #ffb703 55%, #e09f00 100%);
+            color: #0a1128;
+            font-weight: 700;
+            animation: pulseGlow 2.6s infinite;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .btn-magic:active {
+            transform: scale(0.96);
+        }
+
+        .btn-magic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+            transform: skewX(-25deg);
+            animation: shimmerSweep 3.8s infinite;
+        }
+
+        @keyframes shimmerSweep {
+            0% {
+                left: -100%;
+            }
+
+            45%,
+            100% {
+                left: 160%;
+            }
+        }
+
+        /* Texto dorado con brillo sutil */
+        .gold-gradient-text {
+            background: linear-gradient(180deg, #fff8d6 0%, #f4d06f 50%, #ffb703 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 10px rgba(244, 208, 111, 0.25));
+        }
+
+        /* Tarjetas translúcidas nocturnas */
+        .glass-card {
+            background: rgba(28, 37, 65, 0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(244, 208, 111, 0.28);
+            box-shadow: 0 8px 32px rgba(6, 10, 23, 0.45);
+        }
+
+        /* Adaptación para celulares muy pequeños de alto (ej. iPhone SE) */
+        @media (max-height: 700px) {
+            .scene {
+                padding: 2.6rem 1.15rem 1.1rem 1.15rem;
+            }
+
+            .illustration-size {
+                width: 150px !important;
+                height: 150px !important;
+            }
+
+            .illustration-size-sm {
+                width: 105px !important;
+                height: 105px !important;
+            }
+
+            .story-title {
+                font-size: 1.75rem !important;
+                line-height: 1.15 !important;
+            }
+
+            .story-text {
+                font-size: 0.88rem !important;
+                line-height: 1.45 !important;
+            }
+        }
